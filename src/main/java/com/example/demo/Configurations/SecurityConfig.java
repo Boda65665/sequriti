@@ -33,17 +33,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/").permitAll()
+                .antMatchers("/reg").permitAll()
                 .antMatchers("/user").hasAuthority(Permission.DEVELOPERS_READ.getPermission())
                 .antMatchers("/adm").hasAuthority(Permission.DEVELOPERS_WRITE.getPermission())
-
                 .anyRequest()
                 .authenticated()
                 .and()
-                .formLogin()
 
+
+                .formLogin()
                 .defaultSuccessUrl("/success")
                 .and()
+
+
+
                 .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "POST"))
                 .invalidateHttpSession(true)

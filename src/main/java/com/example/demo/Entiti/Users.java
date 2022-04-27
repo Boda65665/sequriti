@@ -5,6 +5,9 @@ import javax.validation.constraints.NotNull;
 @Table(name = "users")
 @Entity
 public class Users {
+    @Enumerated(value = EnumType.STRING)
+    @Column(name = "role")
+    private Role role;
     @Column(name="email")
     String email;
     @Column(name = "login")
@@ -66,5 +69,13 @@ public class Users {
                 ", password='" + password + '\'' +
                 ", id=" + id +
                 '}';
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }

@@ -1,5 +1,6 @@
 package com.example.demo.DTO;
 
+import com.example.demo.Entiti.Role;
 import lombok.Data;
 
 import javax.validation.constraints.Email;
@@ -9,7 +10,7 @@ import javax.validation.constraints.Size;
 @Data
 public class UserDTO{
     int id;
-
+    Role role;
     @Size(min = 5,max = 15,message = "password for 5 to 15 symbols")
     String password;
     @Size(min = 1,message = "min 1 symbol")
