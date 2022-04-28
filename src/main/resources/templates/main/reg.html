@@ -5,7 +5,7 @@
     <title>Регистрация</title>
 </head>
 <body>
-<p style="color:red" th:text="${user}"/>
+
 <form th:method="POST" th:action="@{/reg}" th:object="${user_dto}">
     <div style="color:red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error</div>
     <label for="email">Enter email: </label>
