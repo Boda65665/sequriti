@@ -17,8 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -60,7 +59,7 @@ public class AuthenticationRestControllerV1 {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> authenticate(@ModelAttribute("auth") AuthenticationRequestDTO request) {
+    public ResponseEntity<?> authenticate(@ModelAttribute("auth") AuthenticationRequestDTO request,HttpServletResponse response_user) {
         System.out.println("HEllo WORL");
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
@@ -69,6 +68,9 @@ public class AuthenticationRestControllerV1 {
             Map<Object, Object> response = new HashMap<>();
             response.put("email", request.getEmail());
             response.put("token", token);
+            Cookie cookie = new Cookie("JWT", token);
+            cookie.setMaxAge(3600);
+            response_user.addCookie(cookie);
             return ResponseEntity.ok(response);
         } catch (AuthenticationException e) {
             return new ResponseEntity<>("Invalid email/password combination", HttpStatus.FORBIDDEN);
@@ -80,4 +82,5 @@ public class AuthenticationRestControllerV1 {
         SecurityContextLogoutHandler securityContextLogoutHandler = new SecurityContextLogoutHandler();
         securityContextLogoutHandler.logout(request, response, null);
     }
+
 }

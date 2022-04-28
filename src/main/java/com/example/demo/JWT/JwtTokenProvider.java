@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.beans.factory.annotation.Value;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Base64;
 import java.util.Date;
@@ -22,7 +23,7 @@ public class JwtTokenProvider {
 
     @Value("${jwt.secret}")
     private String secretKey;
-    @Value("${jwt.header}")
+    @Value("${jwt.cookie}")
     private String authorizationHeader;
     @Value("${jwt.expiration}")
     private long validityInMilliseconds;
@@ -69,6 +70,21 @@ public class JwtTokenProvider {
     }
 
     public String resolveToken(HttpServletRequest request) {
-        return request.getHeader(authorizationHeader);
+        String token;
+        Cookie[] cookies = request.getCookies();
+
+        if (cookies != null) {
+            for (Cookie c : cookies) {
+                if (authorizationHeader.equals(c.getName())) {
+
+                    System.out.println(c.getValue());
+                    return c.getValue();
+
+                }
+            }
+        }
+        return null;
+
     }
-}
+
+    }
